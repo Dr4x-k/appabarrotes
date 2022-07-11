@@ -1,0 +1,23 @@
+
+
+.main-section {
+    margin: 0 auto;
+    margin-top: 25%;
+    padding: 0;
+}
+
+.user-img {
+    margin-top: -50px;
+    margin-bottom: 20px;
+}
+
+.user-img img {
+    width: 150px;
+    height: 150px;
+}
+
+.upd {
+    margin: 5px 0 25px;
+    width: 150px;
+
+}
