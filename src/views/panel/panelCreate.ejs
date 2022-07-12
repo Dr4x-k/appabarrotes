@@ -6,28 +6,27 @@
             <div class="user-img">
                 <img src="../img/usuario.png" alt="Imagen de usuario">
             </div>
-            <% if (data) { %> 
-            <h2 class="fw-bold text-center">Actualizar Usuario</h2>
+            <h2 class="fw-bold text-center">Dar de Alta Empleado</h2>
             <!-- Registrar -->
             <div>
                 
             </div>
-            <form action="/update" method="POST" class="">
+            <form action="/save" method="POST" class="">
                 <div class="row">
                     <div class="col">
-                        <input hidden id="idUsuario" name="idUsuario" value="<%= data.idUsuario %>">
+                        <input hidden id="idUsuario" name="idUsuario">
                         <div class="input-group mb-3">
                             <label for="name" class="input-group-text"><i class="fas fa-user"></i></label>
-                            <input id="name" name="name" type="text" class="form-control" placeholder="Nombre(s)" value="<%= data.nombres %>"/>
+                            <input id="name" name="name" type="text" class="form-control" placeholder="Nombre(s)"/>
                         </div>
                         <div class="input-group mb-3">
                             <label for="apPaterno" class="input-group-text"><i class="fas fa-user"></i></label>
-                            <input id="apPaterno" name="apPaterno" type="text" class="form-control" placeholder="Apellido Paterno" value="<%= data.apellidoPaterno %>"/>
+                            <input id="apPaterno" name="apPaterno" type="text" class="form-control" placeholder="Apellido Paterno"/>
                         </div>
                         <div class="input-group mb-3">
                             <!-- <label for="user" class="form-label">Usuario</label> -->
                             <label for="apMaterno" class="input-group-text"><i class="fas fa-user"></i></label>
-                            <input id="apMaterno" name="apMaterno" type="text" class="form-control" placeholder="Apellido Materno" value="<%= data.apellidoMaterno %>"/>
+                            <input id="apMaterno" name="apMaterno" type="text" class="form-control" placeholder="Apellido Materno"/>
                         </div>
                         
                         <!-- <div class="input-group mb-3">
@@ -56,28 +55,28 @@
                         <div class="input-group mb-3">
                             <!-- <label for="user" class="form-label">Usuario</label> -->
                             <label for="celular" class="input-group-text"><i class="fas fa-user"></i></label>
-                            <input id="celular" name="cel" type="text" class="form-control" placeholder="Tel&eacute;fono" value="<%= data.telefono %>"/>
+                            <input id="celular" name="cel" type="text" class="form-control" placeholder="Tel&eacute;fono"/>
                         </div>
                         <div class="input-group mb-3">
                             <!-- <label for="user" class="form-label">Usuario</label> -->
                             <label for="user" class="input-group-text"><i class="fas fa-user"></i></label>
-                            <input id="user" name="user" type="text" class="form-control" placeholder="Usuario" value="<%= data.usuario %>"/>
+                            <input id="user" name="user" type="text" class="form-control" placeholder="Usuario"/>
                         </div>
                         <div class="input-group mb-3">
                             <!-- <label for="pssw" class="form-label">Contrase&ntilde;a</label> -->
                             <label for="pssw" class="input-group-text"><i class="fas fa-lock"></i></label>
-                            <input id="pssw" name="pssw" type="password" class="form-control" placeholder="Contrase&ntilde;a" value="<%= data.contrasena %>"/>
+                            <input id="pssw" name="pssw" type="password" class="form-control" placeholder="Contrase&ntilde;a"/>
                         </div>
-                        <div class="input-group mb-3">
+                        <!-- <div class="input-group mb-3"> -->
                             <!-- <label for="pssw" class="form-label">Contrase&ntilde;a</label> -->
                             <!-- <label for="cpssw" class="input-group-text"><i class="fas fa-lock"></i></label>
                             <input id="cpssw" name="cpssw" type="password" class="form-control" placeholder="Confirmar Contrase&ntilde;a"/> -->
-                        </div>
+                        <!-- </div> -->
                         <div class="mb-3">
                             <select class="form-select" id="typeUser" name="typeUser">
                                 <!-- <option>Tipo de usuario</option> -->
-                                <option <%= data.fk_rol=='1' ? 'selected' : '' %> value="1">Jefe</option>
-                                <option <%= data.fk_rol=='2' ? 'selected' : '' %> value="2">Empleado</option>
+                                <option value="1">Administrador</option>
+                                <option value="2">Empleado</option>
                             </select>
                         </div>
                     </div>
@@ -87,14 +86,7 @@
                     <button type="submit" class="btn btn-primary upd"><i class="fas fa-sign-in-alt"></i> Actualizar</button>
                     <a href="/panelE" class="btn btn-danger upd"> Cancelar</a>
                 </div>
-                <!-- <div class="p-2">
-                    <a href="login" class="text-dark">Iniciar Sesi&oacute;n</a>
-                </div> -->
-                <!-- <div class="mt-3">
-                    <span>Olvidaste la contrase&ntilde;a</span>
-                </div> -->
             </form>
-            <% }; %> 
         </div>
     </div>
 </div>
