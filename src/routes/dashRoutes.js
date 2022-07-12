@@ -1,3 +1,5 @@
+const { isAuth } = require('../controllers/loginController')
+
 const express = require('express'),
         // const { router } = require('../app.js')
         // app = require('../app'),
@@ -9,12 +11,16 @@ const express = require('express'),
 // ruta controladores
 routes = express.Router()
 
-routes.get('/', (req, res) => {
+routes.get('/', loginController.isAuth, (req, res) => {
     res.render('index')
 })
 
 routes.get('/login', loginController.list)
-// routes.post('/login', loginController.login)
+// routes.get('/login', (req, res) => {
+//     res.render('login', { alert:false })
+// })
+routes.post('/login', loginController.login)
+routes.get('/logout', loginController.logout)
 
 routes.get('/home', panelController.panelHome)
 routes.get('/panelE', panelController.panelEmp)
@@ -25,7 +31,10 @@ routes.get('/update/:idUsuario', panelController.edit)
 routes.get('/delete/:idUsuario', panelController.deleteEmpleados)
 routes.post('/update', panelController.updateEmpleados)
 
+routes.get('/signup', (req, res) => {
+    res.render('signup', { alert:false })
+})
 routes.get('/signup', signupController.view)
-routes.post('/save', signupController.save)
+routes.post('/signup', signupController.save)
 
 module.exports = routes

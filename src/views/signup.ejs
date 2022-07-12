@@ -23,9 +23,13 @@
                     <h2 class="fw-bold text-center">Registrarse</h2>
                     <!-- Registrar -->
                     <div>
-                        
+                        <% if (alert) { %> 
+                            <div class="alert alert-danger" role="alert">
+                                <%= alertMessage %> 
+                            </div>
+                        <% } %> 
                     </div>
-                    <form action="/save" method="POST" class="">
+                    <form action="/signup" method="POST" class="">
                         <div class="row">
                             <div class="col">
                                 <div class="input-group mb-3">
@@ -85,13 +89,13 @@
                                     <!-- <label for="cpssw" class="input-group-text"><i class="fas fa-lock"></i></label>
                                     <input id="cpssw" name="cpssw" type="password" class="form-control" placeholder="Confirmar Contrase&ntilde;a"/> -->
                                 </div>
-                                <!-- <div class="mb-3">
+                                <div class="mb-3">
                                     <select class="form-select" id="typeUser" name="typeUser">
                                         <option>Tipo de usuario</option>
                                         <option value="1">Jefe</option>
                                         <option value="2">Empleado</option>
                                     </select>
-                                </div> -->
+                                </div>
                             </div>
                         </div>
                         <div class="">

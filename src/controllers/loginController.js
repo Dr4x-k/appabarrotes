@@ -1,98 +1,99 @@
 const conexion = require('../database/connection')
 const bodyParser = require('body-parser')
-const bcrypt = require('bcryptjs')
+const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const { promisify } = require('util')
+const dotenv = require('dotenv')
 
 const loginController = {}
 
 loginController.list = (req, res) => {
     conexion.query('select * from usuario', (err, result) => {
         if (err) {
-            res.json(err);
+            // res.json(err);
         }
         // console.log(result)
-        res.render('login')
+        res.render('login', { alert:false })
     })
 }
 
-loginController.login = (req, res) => {
-    const usuario = req.body.user,
-            contrasena = req.body.pssw;
-    conexion.query('select * from usuario where usuario = ?', { usuario }, (err, results) => {
-        
-    })
+loginController.login = async (req, res) => {
+    try {
+        const usuario = req.body.user;
+        const contrasena = req.body.pssw;
+
+        if (!usuario || !contrasena) {
+            res.render('login', {
+                alert:true,
+                alertTitle: 'Advertencia',
+                alertMessage: 'Escribe tu usuario y contraseña',
+                alertIcon: 'info',
+                showConfirmButton: true,
+                ruta: 'login'
+            })
+        } else {
+            conexion.query('select * from usuario where usuario = ?', [usuario], async (err, results) => {
+                if (results.length == 0 || !(await bcryptjs.compare(contrasena, results[0].contrasena))) {
+                    res.render('login', {
+                        alert:true,
+                        alertTitle: 'Error',
+                        alertMessage: 'Usuario o contraseña incorrecta',
+                        alertIcon: 'error',
+                        showConfirmButton: true,
+                        timer: false,
+                        ruta: 'login'
+                    })
+                } else {
+                    const idUsuario = results[0].idUsuario;
+                    const token = jwt.sign({ idUsuario:idUsuario }, process.env.JWT_SECRET, {
+                        expiresIn: process.env.JWT_EXPIRATION_TIME
+                    })
+                    const cookiesOptions = {
+                        expires: new Date(Date.now()+process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+                        httpOnly: true
+                    }
+                    res.cookie('jwt', token, cookiesOptions)
+                    res.render('login', {
+                        alert:true,
+                        alertTitle: 'Conexión establecida',
+                        alertMessage: 'Inicio de sesión correcto',
+                        alertIcon: 'success',
+                        showConfirmButton: false,
+                        timer: 1000,
+                        ruta: '/panelE'
+                    })
+                }
+            })
+        }
+    } catch (error) {
+        console.log(error)
+    }
 }
 
-// loginController.login = (req, res) => {
-//     // const data = req.body
-//     // console.log(data)
-
-//     let user = req.body.user
-//     let pssw = req.body.pssw
-
-//     conexion.query('select * from usuario where = ?', [user], (err, empleado) => {
-
-//         if (empleado.length > 0) {
-//             // bcrypt.compare(data.pssw, empleado.contrasena, (err, isMatch) => {
-//                 // if (!isMatch) {
-//                     // res.render('login', { err: 'Error: contraseña incorrecta'})
-//                     // console.log('contraseña incorrecta')
-//                 // } else {
-//                     // console.log('Holi')
-//                 // }
-                
-//             // })
-//             console.log(empleado)
-//         } else {
-//             console.log('usuario incorrecto')
-//         }
-//         // console.log(empleado)
-//     })
-// }
+loginController.isAuth = async (req, res, next) => {
+    if (req.cookies.jwt) {
+        try {
+            const decod = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET)
+            conexion.query('select * from usuario where idUsuario = ?', [decod.idUsuario], (err, results) => {
+                if (!results) {
+                    return next()
+                }
+                req.nombres = results[0]
+                return next()
+            })
+        } catch (error) {
+            console.log(error)
+            return next()
+        }
+    } else {
+        res.redirect('/login')
+    }
+}
 
 
-// loginController.login = async (req, res) => {
-//     try {
-//         const { user, pssw } = req.body
-//         if (!user || !pssw) {
-//             return res.status(400).render('login'), {
-//                 message: "Ingresa usuario y contraseña"
-//             }
-//         } conexion.query('select * from usuario where usuario = ?', [user], async (err, results) => {
-//             console.log(results)
-
-//             console.log(req.body)
-//             if (!results || !pssw, results[0].pssw) {
-//                 res.status(401).send('login', (req, res) => {
-//                     console.log(results)
-                    
-//                 })
-//                 // res.status(401).send('login', {
-//                 //     message: 'Eror'
-//                 // })
-//             } else {
-//                 const id = results[0].id
-
-//                 // const token = jwt.sign({ id }, process.env.JWT_SECRET, {
-//                 //     expiresIn: process.env.JWT_EXPIRES_IN
-//                 // })
-
-//                 // console.log('El token is ' + token)
-
-//                 // const cookieOptions = {
-//                 //     expires: new Date(
-//                 //         Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-//                 //     ),
-//                 //     httpOnly: true
-//                 // }
-//                 // res.cookie('userSave', token, cookieOptions)
-//                 // res.status(200).redirect('/')
-//                 res.send('jala')
-//             }
-//         })
-//     } catch (err) {
-//         console.log(err);
-//     }
-// }
+loginController.logout = (req, res) => {
+    res.clearCookie('jwt')
+    return res.redirect('/')
+}
 
 module.exports = loginController
