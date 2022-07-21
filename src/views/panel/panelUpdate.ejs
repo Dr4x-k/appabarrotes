@@ -66,7 +66,7 @@
                         <div class="input-group mb-3">
                             <!-- <label for="pssw" class="form-label">Contrase&ntilde;a</label> -->
                             <label for="pssw" class="input-group-text"><i class="fas fa-lock"></i></label>
-                            <input id="pssw" name="pssw" type="password" class="form-control" placeholder="Contrase&ntilde;a" value="<%= data.contrasena %>"/>
+                            <input id="pssw" name="pssw" type="password" class="form-control" placeholder="Contrase&ntilde;a"/>
                         </div>
                         <div class="input-group mb-3">
                             <!-- <label for="pssw" class="form-label">Contrase&ntilde;a</label> -->
@@ -76,8 +76,9 @@
                         <div class="mb-3">
                             <select class="form-select" id="typeUser" name="typeUser">
                                 <!-- <option>Tipo de usuario</option> -->
-                                <option <%= data.fk_rol=='1' ? 'selected' : '' %> value="1">Jefe</option>
+                                <option <%= data.fk_rol=='1' ? 'selected' : '' %> value="1">Administrador</option>
                                 <option <%= data.fk_rol=='2' ? 'selected' : '' %> value="2">Empleado</option>
+                                <option <%= data.fk_rol=='3' ? 'selected' : '' %> value="3">Usuario</option>
                             </select>
                         </div>
                     </div>
@@ -96,6 +97,9 @@
             </form>
             <% }; %> 
         </div>
+        <script>
+            
+        </script>
     </div>
 </div>
 </body>

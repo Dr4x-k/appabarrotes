@@ -1,4 +1,5 @@
-const conexion = require('../database/connection')
+const conexion = require('../database/connection'),
+        bcrypt = require('bcryptjs')
 
 const panelController = {}
 
@@ -46,6 +47,7 @@ panelController.createNewEmpleado = (req, res) => {
             usuario = req.body.user, 
             contrasena = req.body.pssw
             fk_rol = req.body.typeUser;
+            // let 
         
             // if (req.body.typeUser == 'Administrador')
 
@@ -67,12 +69,13 @@ panelController.edit = (req, res) => {
             throw err;
         } else {
             res.render('panel/panelUpdate', { data : results[0] });
+            
             // console.log({data:results})
         }
     })
 }
 
-panelController.updateEmpleados = (req, res) => {
+panelController.updateEmpleados = async (req, res) => {
     const idUsuario = req.body.idUsuario
     const nombres = req.body.name,
             apellidoPaterno = req.body.apPaterno,
@@ -81,14 +84,21 @@ panelController.updateEmpleados = (req, res) => {
             usuario = req.body.user, 
             contrasena = req.body.pssw
             fk_rol = req.body.typeUser;
+    let pssHash = await bcrypt.hash(contrasena, 8);
     
-    conexion.query('update usuario set ? where idUsuario = ?', [ { nombres, apellidoPaterno, apellidoMaterno, telefono, usuario, contrasena, fk_rol }, idUsuario], (err, empleados) => {
+    conexion.query('update usuario set ? where idUsuario = ?', [ { nombres, apellidoPaterno, apellidoMaterno, telefono, usuario, contrasena : pssHash, fk_rol }, idUsuario], (err, empleados) => {
         if (err) {
             throw err;
         } else {
             // res.render('panel/panelEmpleados', { data : empleados[0] })
             // console.log(idUsuario)
-            res.redirect('/panelE')
+            res.render('panel/update:idUsuario', {
+                // position: 'top-end',
+                alertIcon: 'success',
+                alertTitle: 'El usuario se actualizó correctamente',
+                showConfirmButton: false,
+                timer: 1500
+            })
         }
     })
 }
@@ -105,5 +115,6 @@ panelController.deleteEmpleados = (req, res) => {
     })
 }
 
+// Meter la cookie para no poder entrar -- pendiente
 
 module.exports = panelController

@@ -7,7 +7,7 @@ const dotenv = require('dotenv')
 
 const loginController = {}
 
-loginController.list = (req, res) => {
+loginController.list = loginController.isAuth, (req, res) => {
     conexion.query('select * from usuario', (err, result) => {
         if (err) {
             // res.json(err);
@@ -17,7 +17,7 @@ loginController.list = (req, res) => {
     })
 }
 
-loginController.login = async (req, res) => {
+loginController.login = async  (req, res) => {
     try {
         const usuario = req.body.user;
         const contrasena = req.body.pssw;
@@ -59,7 +59,7 @@ loginController.login = async (req, res) => {
                         alertMessage: 'Inicio de sesión correcto',
                         alertIcon: 'success',
                         showConfirmButton: false,
-                        timer: 1000,
+                        timer: 1500,
                         ruta: '/panelE'
                     })
                 }
@@ -78,7 +78,7 @@ loginController.isAuth = async (req, res, next) => {
                 if (!results) {
                     return next()
                 }
-                req.nombres = results[0]
+                row = results[0]
                 return next()
             })
         } catch (error) {
@@ -89,7 +89,6 @@ loginController.isAuth = async (req, res, next) => {
         res.redirect('/login')
     }
 }
-
 
 loginController.logout = (req, res) => {
     res.clearCookie('jwt')
