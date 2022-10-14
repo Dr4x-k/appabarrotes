@@ -1,9 +1,9 @@
 use abarrotes;
 -- Inserciones en Rol
 
-insert into rol values ('Administrador', 'Jefe o Gerente');
-insert into rol values ('Empleado', 'Trabajador');
-insert into rol values ('Usuario', 'Usuario de la página');
+insert into rol values (0, 'Administrador', 'Jefe o Gerente');
+insert into rol values (0, 'Empleado', 'Trabajador');
+insert into rol values (0, 'Usuario', 'Usuario de la página');
 
 -- Inserciones en Empleado
 

@@ -1,26 +1,26 @@
 const app = require('../app.js')
 const mysql = require('mysql')
 const myConnection = require('express-myconnection')
-const dotenv = require('dotenv')
+
 
 
 // const mysql = require('mysql');
 const conexion = mysql.createConnection({
     host     : 'localhost',
-    user     : 'root',
-    password : 'toor',
-    database : 'abarrotes'  
+    user     : process.env.DB_USER  || 'root',
+    password : process.env.DB_PWD   || '300121',
+    database : process.env.DB_NAME  || 'abarrotes'  
 });
 
-conexion.connect((error)=>{
+conexion.connect((error) => {
     if (error) {
       console.error('El error de conexión es: ' + error);
       return;
     }
     console.log('¡Conectado a la Base de Datos!');
-  });
+});
 
-  module.exports = conexion;
+module.exports = conexion;
 
 
 

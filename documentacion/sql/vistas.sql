@@ -1,9 +1,20 @@
+use abarrotes;
+
 create view viewUsuarios as
-select us.nombres as 'Nombres', us.apellidoPaterno as 'Apellido Paterno',
-    us.apellidoMaterno as 'Apellido Materno', us.usuario as 'Usuario',
-    r.nombre as 'Rol'
+select us.idUsuario, us.nombres, us.apellidoPaterno,
+    us.apellidoMaterno, us.usuario,
+    r.nombre as rol
 from usuario as us
 inner join rol as r
-on r.idRol = us.fk_rol
+on r.idRol = us.fk_rol;
+
+create view viewProductos as
+select prod.idProducto, prod.nombreProducto as producto,
+    prod.descripcion, prod.precio, cat.categoria
+from productos as prod
+inner join categoria as cat
+on cat.categoria = prod.fk_idCategoria;
+
+select * from viewProductos;
 
 select * from viewUsuarios

@@ -1,6 +1,7 @@
 create database abarrotes;
 -- drop database abarrotes;
 use abarrotes;
+-- use master;
 
 create table nuevosUsuarios (
     idUsuario int,
@@ -10,13 +11,13 @@ create table nuevosUsuarios (
 );
 
 create table rol (
-    idRol int primary key auto_increment,
+    idRol int primary key identity(1,1),
     nombre varchar(15) not null,
     descripcion text 
 );
 
 create table usuario (
-    idUsuario int primary key auto_increment,
+    idUsuario int primary key identity(1,1) not null,
     fk_rol int not null,
     nombres varchar(50) not null,
     apellidoPaterno varchar(25) not null,
@@ -33,7 +34,7 @@ create table usuario (
 );
 
 create table proveedor (
-    idProveedor int primary key auto_increment,
+    idProveedor int primary key identity(1,1) not null,
     nombreCompania varchar(60) not null,
     nombreContacto varchar(60) not null,
     direccion text not null,
@@ -43,12 +44,12 @@ create table proveedor (
 );
 
 create table categoria (
-    idCategoria int primary key auto_increment,
+    idCategoria int primary key identity(1,1),
     categoria varchar(40) not null
 );
 
 create table productos (
-    idProducto int primary key auto_increment,
+    idProducto int primary key identity(1,1),
     codigoBarras varchar(13),
     nombreProducto varchar(50) not null,
     descripcion text,
@@ -64,7 +65,7 @@ create table productos (
 );
 
 create table detalleVenta (
-    idDetalleVenta int primary key auto_increment,
+    idDetalleVenta int primary key identity(1,1),
     fk_idProducto int not null,
     cantidad int not null,
     precio decimal(11,2) not null,
@@ -74,7 +75,7 @@ create table detalleVenta (
 );
 
 create table venta (
-    idVenta int primary key auto_increment,
+    idVenta int primary key identity(1,1),
     fk_idDetalleVenta int not null,
     fk_idUsuario int not null,
     fechaVenta datetime not null,
