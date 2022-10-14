@@ -11,10 +11,10 @@ const express = require('express'),
 // ruta controladores
 routes = express.Router()
 
-routes.get('/', loginController.isAuth, (req, res) => {
+/* routes.get('/', loginController.isAuth, (req, res) => {
     res.render('index')
 })
-
+ */
 // routes.get('/login', loginController.list)
 routes.get('/login', (req, res) => {
     res.render('login', { alert:false })
@@ -31,7 +31,9 @@ routes.get('/panelCreate', panelController.panelCreate)
 routes.post('/save', panelController.createNewEmpleado)
 routes.get('/update/:idUsuario', panelController.edit)
 routes.get('/delete/:idUsuario', panelController.deleteEmpleados)
-routes.post('/update', panelController.updateEmpleados)
+routes.post('/update', panelController.updateEmpleados, (req, res) => {
+    res.render('panelEmpleados');
+})
 
 routes.get('/signup', (req, res) => {
     res.render('signup', { alert:false })
